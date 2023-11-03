@@ -5,7 +5,7 @@ var mapInput;
 var mapOutput = {};
 
     
-fs.readFile('./src/game/Data/map2.json', 'utf8', (err, data) => {
+fs.readFile('map2.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err);
       return;
@@ -19,7 +19,7 @@ fs.readFile('./src/game/Data/map2.json', 'utf8', (err, data) => {
       createMaps(x);
     }
 
-    fs.writeFile('MapOutput.json', JSON.stringify(mapOutput), (err) => {
+    fs.writeFile('MapOutput18x18.json', JSON.stringify(mapOutput), (err) => {
         
         // In case of a error throw err.
         if (err) throw err;
