@@ -35,7 +35,7 @@ fs.readFile('map2.json', 'utf8', (err, data) => {
       createMaps(x);
     }
 
-    fs.writeFile('MapOutput18x18.json', JSON.stringify(mapOutput), (err) => {
+    fs.writeFile('../../IPC_Dungeons/src/game/Data/MapOutput18x18.json', JSON.stringify(mapOutput), (err) => {
         
         // In case of a error throw err.
         if (err) throw err;
@@ -46,12 +46,12 @@ fs.readFile('map2.json', 'utf8', (err, data) => {
   {
      var layer = [];
     // var row = [];
-    // //empty row
+     //empty row
     for(var j = 0;  j < 18; j++)
     {
       layer.push(new Array(18).fill(tile.empty));
     }
-    // //creating empty layer
+     //creating empty layer
     // for(var j = 0;  j < 18; j++)
     // {
     //   layer.push(row);
@@ -69,7 +69,12 @@ fs.readFile('map2.json', 'utf8', (err, data) => {
       var layer0 = createLayer();
       var layer1 = createLayer(); //main wall
       var layer2 = createLayer(); //shadow
-      var layer3 = createLayer(); //side walls              
+      var layer3 = createLayer(); //left walls              
+      var layer4 = createLayer(); //right walls 
+      var layer5 = createLayer(); //left short walls              
+      var layer6 = createLayer(); //right short walls              
+
+
 
 
       var index = 0;
@@ -91,7 +96,7 @@ fs.readFile('map2.json', 'utf8', (err, data) => {
               //side shadow
               layer2[i+1][j+1] = tile['left-shadow'];
               //side wall left
-              layer3[i+1][j] = tile['left-wall'];
+              layer4[i+1][j] = tile['left-wall']; //<====
             }
 
             //is tile on top empty
@@ -136,17 +141,33 @@ fs.readFile('map2.json', 'utf8', (err, data) => {
           //side wall right
           if(layer0[i][j] == tile.floor && layer0[i][j+1] == tile.empty)
           {
-            layer3[i][j+1] = tile['right-wall'];
+            layer3[i][j+1] = tile['right-wall']; //<===
           }
           //side top wall right
           if(layer1[i][j] == tile.wall && layer1[i][j-1] == tile.empty)
           {
-            layer1[i][j-1] = tile['right-short-top-wall'];
+            if(layer0[i][j-1] == tile.empty)
+            {
+              layer6[i][j-1] = tile['right-short-top-wall'];
+            }
+            else
+            {
+              layer6[i][j] = tile['left-short-top-wall'];
+            }
+            
           }
           //side top wall left
           if(layer1[i][j] == tile.wall && layer1[i][j+1] == tile.empty)
           {
-            layer1[i][j+1] = tile['left-short-top-wall'];
+            if(layer0[i][j+1] == tile.empty)
+            {
+              layer5[i][j+1] = tile['left-short-top-wall'];
+            }
+            else
+            {
+              layer5[i][j] = tile['right-short-top-wall'];
+            }
+            
           }
         }
       }
@@ -157,6 +178,11 @@ fs.readFile('map2.json', 'utf8', (err, data) => {
       mapOutput[mapName][1] = layer1;
       mapOutput[mapName][2] = layer2;
       mapOutput[mapName][3] = layer3;
+      mapOutput[mapName][4] = layer4;
+      mapOutput[mapName][5] = layer5;
+      mapOutput[mapName][6] = layer6;
+
+
 
       
   }
